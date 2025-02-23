@@ -27,7 +27,7 @@ function App() {
           timestamp: new Date(),
         });
         // Navigate to the 'posts' page after success
-        navigate("/posts");
+        navig("/posts");
       } catch (e) {
         setError("Error saving email to database.");
         console.error("Error adding document: ", e);
