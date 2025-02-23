@@ -1,8 +1,26 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import beer from "./assets/beer.png";
+import { useState } from "react";
 
 function App() {
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
+  const handleSubmit = () => {
+    if (!validateEmail(email)) {
+      setError("Please enter a valid email address.");
+    } else {
+      setError("");
+      alert("Email submitted: " + email);
+    }
+  };
+
   return (
     <div
       className="container text-center mt-5"
@@ -52,11 +70,17 @@ function App() {
               className="form-control"
               placeholder="Enter your email"
               aria-label="Email"
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <button className="btn btn-primary" type="button">
+          <button
+            className="btn btn-primary"
+            type="button"
+            onClick={handleSubmit}
+          >
             Find Your Next Move
           </button>
+          {error && <p className="text-danger">{error}</p>}
         </div>
       </div>
     </div>
