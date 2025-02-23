@@ -1,35 +1,66 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
+import beer from "./assets/beer.png";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div
+      className="container text-center mt-5"
+      style={{
+        backgroundColor: "black",
+        color: "white",
+        minHeight: "100vh",
+        minWidth: "100vw",
+        padding: "20px",
+      }}
+    >
+      {/* Company Name with Images */}
+      <div className="d-flex align-items-center justify-content-center">
+        <img
+          src={beer}
+          style={{ height: "50px", width: "auto" }}
+          alt="Beer"
+          className="img-fluid rounded me-3"
+        />
+        <h1 className="display-4 text-white">What's the Move</h1>
+        <img
+          src={beer}
+          style={{ height: "50px", width: "auto" }}
+          alt="Beer"
+          className="img-fluid rounded ms-3"
+        />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+
+      {/* Hero Section */}
+      <div className="row justify-content-center mt-4">
+        <div className="col-md-8">
+          <h1 className="display-6">Enhance Your Nightlife Experience</h1>
+          <p className="lead">
+            Our mobile nightlife platform empowers college partygoers by
+            eliminating confusion and indecisiveness, providing real-time,
+            reliable information on the best events, venues, and experiences.
+          </p>
+        </div>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+
+      {/* Email Subscription Section */}
+      <div className="row justify-content-center mt-4">
+        <div className="col-md-6">
+          <div className="input-group mb-3">
+            <input
+              type="email"
+              className="form-control"
+              placeholder="Enter your email"
+              aria-label="Email"
+            />
+          </div>
+          <button className="btn btn-primary" type="button">
+            Find Your Next Move
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-export default App
+export default App;
