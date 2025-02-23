@@ -1,9 +1,10 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import App from "./App.jsx";
+import React from "react";
+import ReactDOM from "react-dom/client"; // For React 18 and later
+import AppWrapper from "./AppWrapper"; // Import AppWrapper
 
-createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
+const root = ReactDOM.createRoot(document.getElementById("root")); // For React 18 and later
+root.render(
+  <React.StrictMode>
+    <AppWrapper /> {/* Use AppWrapper as the root component */}
+  </React.StrictMode>
 );

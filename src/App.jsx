@@ -3,10 +3,12 @@ import "./App.css";
 import beer from "./assets/beer.png";
 import { useState } from "react";
 import { db, addDoc, collection } from "./Firebase"; // Import Firebase functions
+import { useNavigate } from "react-router-dom";
 
 function App() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate(); 
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -24,9 +26,10 @@ function App() {
           email: email,
           timestamp: new Date(),
         });
-        alert("Email submitted: " + email);
+        // Navigate to the 'posts' page after success
+        navigate("/posts");
       } catch (e) {
-        setError("Error saving email to Firebase.");
+        setError("Error saving email to database.");
         console.error("Error adding document: ", e);
       }
     }
