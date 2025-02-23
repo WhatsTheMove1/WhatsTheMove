@@ -2,6 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import beer from "./assets/beer.png";
 import { useState } from "react";
+import { db, addDoc, collection } from "./Firebase"; // Import Firebase functions
 
 function App() {
   const [email, setEmail] = useState("");
@@ -12,12 +13,22 @@ function App() {
     return re.test(email);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!validateEmail(email)) {
       setError("Please enter a valid email address.");
     } else {
       setError("");
-      alert("Email submitted: " + email);
+      try {
+        // Save the email to Firebase Firestore
+        await addDoc(collection(db, "emails"), {
+          email: email,
+          timestamp: new Date(),
+        });
+        alert("Email submitted: " + email);
+      } catch (e) {
+        setError("Error saving email to Firebase.");
+        console.error("Error adding document: ", e);
+      }
     }
   };
 
