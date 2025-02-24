@@ -1,47 +1,63 @@
+import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState } from "react"; // For state to handle like button toggle
-import theMark from "./assets/TheMark.png"; // Import image from assets folder
+import { Link } from "react-router-dom";
 
-function Posts() {
-  const [liked, setLiked] = useState(false); // State to toggle like button
+const reviews = [
+  {
+    title: "On The Rox",
+    vibe:
+      "Crowded, Dancing, Loud",
+    date: new Date("2023-10-01T22:00:00"),
+  },
+  {
+    title: "Mate Bar",
+    vibe:
+      "Chill, Quiet, Good drinks",
+    date: new Date("2023-10-02T21:00:00"),
+  },
+  {
+    title: "The Ice Club",
+    vibe: "Crowded, Dancing, Loud",
+    date: new Date("2023-10-01T20:00:00"),
+  },
+];
 
-  const toggleLike = () => {
-    setLiked(!liked);
-  };
+reviews.sort((a, b) => b.date - a.date);
+
+const Posts = () => {
+  
 
   return (
-    <div className="container text-center mt-5">
-      <h1 className="display-4 text-white">Recent Posts</h1>
-      <div className="row justify-content-center mt-4">
-        {/* Post Card */}
-        <div className="col-md-6">
-          <div className="card" style={{ width: "100%", color: "white" }}>
-            <img
-              src={theMark} // Replace with your image URL
-              className="card-img-top"
-              alt="Post Image"
-              style={{ backgroundColor: "white" }}
-            />
+    <div className="container text-center mt-4">
+      <h2 className="text-white">Recent Reviews</h2>
+      <Link className="btn btn-primary mt-3" to="/new-post">Create New Post</Link>
+      <div className="d-flex flex-column align-items-center mt-3">
+        {reviews.map((review, index) => (
+          <div
+            key={index}
+            className="card bg-dark text-light mb-3 border border-white"
+            style={{ width: "100%", maxWidth: "400px" }}
+          >
             <div className="card-body">
+              <h5 className="card-title">📍 {review.title}</h5>
+              <div className="mb-2">
+                {review.vibe.split(", ").map((vibe, i) => (
+                  <button key={i} className="btn btn-primary btn-sm me-2">
+                    {vibe}
+                  </button>
+                ))}
+              </div>
               <p className="card-text">
-                The Mark opened its doors in 2018 and has quickly become one of
-                SLO’s favorites. Cheers!
+                <small className="card-text">
+                  {review.date.toLocaleString()}
+                </small>
               </p>
-              {/* Like Button */}
-              <button
-                className={`btn ${
-                  liked ? "btn-success" : "btn-outline-success"
-                }`}
-                onClick={toggleLike}
-              >
-                {liked ? "Liked" : "Like"}
-              </button>
             </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );
-}
+};
 
 export default Posts;
