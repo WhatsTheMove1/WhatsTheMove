@@ -56,6 +56,12 @@ return (
                     ))}
                 </div>
             </div>
+            <div className="mb-3">
+                <label htmlFor="upload" className="form-label text-white">
+                    Upload a Picture:
+                </label>
+                <input type="file" id="upload" className="form-control" />
+            </div>
             <button type="submit" className="btn btn-primary">
                 Submit
             </button>
