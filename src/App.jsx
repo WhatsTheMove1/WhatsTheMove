@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import beer from "./assets/beer.png";
 import { useState } from "react";
-import { db, addDoc, collection } from "./Firebase"; // Import Firebase functions
+import { db, addDoc, collection } from "./firebase"; // Import Firebase functions
 import { useNavigate } from "react-router-dom";
 
 function App() {

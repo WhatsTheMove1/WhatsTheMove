@@ -13,7 +13,7 @@ const Posts = () => {
       const querySnapshot = await getDocs(collection(db, "posts"));
       const reviewsData = querySnapshot.docs.map((doc) => ({
         ...doc.data(),
-        date: doc.data().date.toDate(),
+        date: doc.data().createdAt.toDate(),
       }));
       reviewsData.sort((a, b) => b.date - a.date);
       setReviews(reviewsData);
@@ -21,7 +21,6 @@ const Posts = () => {
 
     fetchReviews();
   }, []);
-  reviews.sort((a, b) => b.date - a.date);
 
   return (
     <div className="container text-center mt-4">
@@ -38,8 +37,16 @@ const Posts = () => {
           >
             <div className="card-body">
               <h5 className="card-place">📍 {review.place}</h5>
+              {review.uploadedFile && (
+                <img
+                  src={review.uploadedFile}
+                  alt="Uploaded"
+                  className="img-fluid mb-3"
+                  style={{ maxHeight: "200px", objectFit: "cover" }}
+                />
+              )}
               <div className="mb-2">
-                {review.vibe.split(", ").map((vibe, i) => (
+                {review.vibes.map((vibe, i) => (
                   <button key={i} className="btn btn-primary btn-sm me-2">
                     {vibe}
                   </button>
