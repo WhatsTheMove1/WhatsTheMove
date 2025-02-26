@@ -39,6 +39,7 @@ const NewPost = () => {
         vibes,
         uploadedFileUrl,
         createdAt: new Date(),
+        likes: 0,
       });
       console.log("Document written with ID: ", docRef.id);
       navigate("/posts");

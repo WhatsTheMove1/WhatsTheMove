@@ -1,17 +1,17 @@
-import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "./firebase";
+import { Link } from "react-router-dom";
+import { db } from "./firebase"; // Ensure correct Firebase import
+import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 
 const Posts = () => {
   const [reviews, setReviews] = useState([]);
+  const [likedPosts, setLikedPosts] = useState({}); // Track liked posts
 
   useEffect(() => {
     const fetchReviews = async () => {
       const querySnapshot = await getDocs(collection(db, "posts"));
       const reviewsData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
         ...doc.data(),
         date: doc.data().createdAt.toDate(),
       }));
@@ -22,6 +22,25 @@ const Posts = () => {
     fetchReviews();
   }, []);
 
+  const handleLike = async (id, currentLikes) => {
+    if (likedPosts[id]) return; // Prevent multiple likes on the same post
+
+    try {
+      const postRef = doc(db, "posts", id);
+      await updateDoc(postRef, { likes: currentLikes + 1 });
+
+      setReviews((prevReviews) =>
+        prevReviews.map((review) =>
+          review.id === id ? { ...review, likes: currentLikes + 1 } : review
+        )
+      );
+
+      setLikedPosts((prev) => ({ ...prev, [id]: true })); // Mark as liked
+    } catch (error) {
+      console.error("Error updating likes:", error);
+    }
+  };
+
   return (
     <div className="container text-center mt-4">
       <h2 className="text-white">Recent Reviews</h2>
@@ -29,9 +48,9 @@ const Posts = () => {
         Create New Post
       </Link>
       <div className="d-flex flex-column align-items-center mt-3">
-        {reviews.map((review, index) => (
+        {reviews.map((review) => (
           <div
-            key={index}
+            key={review.id}
             className="card bg-dark text-light mb-3 border border-white"
             style={{ width: "100%", maxWidth: "400px" }}
           >
@@ -57,6 +76,15 @@ const Posts = () => {
                   {review.date.toLocaleString()}
                 </small>
               </p>
+              <div className="d-flex justify-content-between align-items-center">
+                <button
+                  className={`btn btn-sm ${likedPosts[review.id] ? "btn-light" : "btn-outline-light"}`}
+                  onClick={() => handleLike(review.id, review.likes)}
+                >
+                  ❤️ Like
+                </button>
+                <span>{review.likes} Likes</span>
+              </div>
             </div>
           </div>
         ))}
@@ -66,3 +94,4 @@ const Posts = () => {
 };
 
 export default Posts;
+
