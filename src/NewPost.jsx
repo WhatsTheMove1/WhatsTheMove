@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import UploadWidget from "./UploadWidget";
 import { db } from "./firebase"; // Make sure to import your firebase configuration
-import { collection, addDoc } from "firebase/firestore"; 
+import { collection, addDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 const NewPost = () => {
@@ -13,25 +12,40 @@ const NewPost = () => {
   const [vibes, setVibes] = useState([]);
   const navigate = useNavigate();
 
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        if (!place || !vibes.length || !uploadedFile) {
-            alert("Please fill out all fields");
-            return;
-        }
-        const docRef = await addDoc(collection(db, "posts"), {
-            place,
-            vibes,
-            uploadedFile,
-            createdAt: new Date()
-        });
-        console.log("Document written with ID: ", docRef.id);
-        navigate("/posts");
+      if (!place || !vibes.length || !uploadedFile) {
+        alert("Please fill out all fields");
+        return;
+      }
+      const formData = new FormData();
+      formData.append("file", uploadedFile);
+      formData.append("upload_preset", "wtmwtm"); // Replace with your Cloudinary upload preset
+
+      const response = await fetch("https://api.cloudinary.com/v1_1/dyulrifpu/image/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to upload image");
+      }
+
+      const data = await response.json();
+      const uploadedFileUrl = data.secure_url;
+      const docRef = await addDoc(collection(db, "posts"), {
+        place,
+        vibes,
+        uploadedFileUrl,
+        createdAt: new Date(),
+      });
+      console.log("Document written with ID: ", docRef.id);
+      navigate("/posts");
     } catch (e) {
-        console.error("Error adding document: ", e);
+      console.error("Error adding document: ", e);
     }
-};
+  };
 
   const toggleVibe = (vibe) => {
     setVibes((prevVibes) =>
@@ -51,7 +65,7 @@ const handleSubmit = async (e) => {
   return (
     <div className="container mt-5">
       <h1 className="text-white">Create a New Post</h1>
-      <form >
+      <form>
         <div className="mb-3">
           {/* Make a drop down menu for the place */}
           <label htmlFor="place" className="form-label text-white">
@@ -82,16 +96,24 @@ const handleSubmit = async (e) => {
             ))}
           </div>
         </div>
-        <UploadWidget onUpload={handleUpload} />
+        <div className="mb-3">
+          <label htmlFor="upload" className="form-label text-white">
+            Upload Image:
+          </label>
+          <input
+            type="file"
+            id="upload"
+            className="form-control"
+            onChange={(e) => handleUpload(e.target.files[0])}
+          />
+        </div>
         <br></br>
         <br></br>
-        {uploadedFile && (
-          <div className="mt-3">
-            <h4>Uploaded Image:</h4>
-          </div>
-        )}
-        <h4>{uploadedFile}</h4>
-        <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
+        <button
+          type="submit"
+          className="btn btn-primary"
+          onClick={handleSubmit}
+        >
           Submit
         </button>
       </form>

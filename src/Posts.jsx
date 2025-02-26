@@ -37,9 +37,9 @@ const Posts = () => {
           >
             <div className="card-body">
               <h5 className="card-place">📍 {review.place}</h5>
-              {review.uploadedFile && (
+              {review.uploadedFileUrl && (
                 <img
-                  src={review.uploadedFile}
+                  src={review.uploadedFileUrl}
                   alt="Uploaded"
                   className="img-fluid mb-3"
                   style={{ maxHeight: "200px", objectFit: "cover" }}
