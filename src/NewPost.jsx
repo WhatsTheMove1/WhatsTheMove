@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const NewPost = () => {
   const [place, setPlace] = useState("");
 
-  const availableVibes = ["Chill", "Loud", "Dancing", "Quiet", "Great Drinks"];
+  const availableVibes = ["Chill", "Loud", "Dancing", "Quiet", "Great Drinks", "Unique", "Young Crowd", "Great Ratio"];
 
   const [vibes, setVibes] = useState([]);
   const navigate = useNavigate();
