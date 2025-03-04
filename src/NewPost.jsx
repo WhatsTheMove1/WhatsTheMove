@@ -19,6 +19,11 @@ const NewPost = () => {
         alert("Please fill out all fields");
         return;
       }
+
+      // Disable the submit button and show a loading indicator
+      const submitButton = document.querySelector("button[type='submit']");
+      submitButton.disabled = true;
+      submitButton.textContent = "Submitting...";
       const formData = new FormData();
       formData.append("file", uploadedFile);
       formData.append("upload_preset", "wtmwtm"); // Replace with your Cloudinary upload preset
